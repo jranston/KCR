@@ -12,7 +12,7 @@ a{color:inherit}.container{width:min(1180px,calc(100% - 32px));margin:auto}
 .header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #e8edf2;box-shadow:0 4px 20px rgba(0,27,51,.06)}
 .nav{display:flex;align-items:center;justify-content:space-between;min-height:82px;gap:18px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:220px}
-.brand img{height:68px;width:auto;max-width:220px;object-fit:contain;display:block}.brand-fallback{display:none;font-weight:900;color:var(--navy);line-height:1}
+.brand img{content:url('/assets/images/kcr-logo.png');height:68px;width:auto;max-width:220px;object-fit:contain;display:block}.brand-fallback{display:none;font-weight:900;color:var(--navy);line-height:1}
 .menu-toggle{display:none;border:0;background:var(--navy);color:#fff;border-radius:10px;padding:10px 12px;font-size:20px}
 .navlinks{list-style:none;display:flex;gap:5px;align-items:center;margin:0;padding:0;flex-wrap:wrap;justify-content:flex-end}
 .navlinks a{display:block;text-decoration:none;padding:9px 12px;border-radius:999px;font-weight:600;color:var(--navy)}
