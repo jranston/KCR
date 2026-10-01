@@ -40,3 +40,11 @@
 }
 
 @media(min-width:1200px){.experience-section .section-head{max-width:1100px}.experience-section .section-head p{max-width:850px;margin-inline:auto}}
+
+/* Final responsive campaign treatment: preserve all supplied campaign artwork at tablet/mobile sizes. */
+@media(max-width:900px){
+ .campaign-hero-bg{background-size:contain!important;background-repeat:no-repeat;background-position:center center!important;background-color:#002542}
+}
+@media(max-width:680px){
+ .campaign-hero-bg{height:auto!important;min-height:0!important;max-height:none!important;aspect-ratio:16/9;background-size:contain!important;background-position:center center!important}
+}
