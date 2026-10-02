@@ -48,3 +48,11 @@
 @media(max-width:680px){
  .campaign-hero-bg{height:auto!important;min-height:0!important;max-height:none!important;aspect-ratio:16/9;background-size:contain!important;background-position:center center!important}
 }
+
+.scroll-hint{display:none;text-align:center;font-size:12px;font-weight:700;color:var(--muted);margin:8px 0 0}
+.form-privacy{font-size:12px;color:var(--muted);line-height:1.5;margin:2px 0 4px}
+@media(max-width:680px){
+ .section-nav::after{content:"Swipe for more →";position:absolute;right:0;bottom:-24px;background:var(--navy);color:#fff;padding:3px 9px;border-radius:0 0 0 9px;font-size:10px;font-weight:800;letter-spacing:.02em}
+ .section-nav{margin-bottom:24px}
+ .table-wrap::after{content:"Swipe table for more →";display:block;position:sticky;left:0;width:max-content;margin:7px 0 0;padding:4px 9px;border-radius:999px;background:#eaf2f8;color:var(--navy);font-size:11px;font-weight:800}
+}
