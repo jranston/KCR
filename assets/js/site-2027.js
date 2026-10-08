@@ -1,4 +1,4 @@
-/* Header logo: use the approved clean transparent PNG directly. */
+/* Header logo: use the verified transparent PNG directly. */
 (()=>{
   const headerStyle=document.createElement('style');
   headerStyle.textContent=`
@@ -32,7 +32,7 @@
 
 document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.brand img').forEach(img=>{
-    img.src='/assets/images/kcr-logo-clean.png';
+    img.src='/assets/images/kcr-logo-clean.png?v=fc745aa';
     img.alt='Kingston City Marathon';
     img.removeAttribute('width');
     img.removeAttribute('height');
