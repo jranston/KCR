@@ -1,24 +1,28 @@
 document.addEventListener('DOMContentLoaded',()=>{
-  /* Use the approved transparent KCR logo in the site header on every page. This intentionally
-     changes only the navigation/header logo; campaign and carousel artwork are untouched. */
+  /* Use the approved transparent KCR logo in the site header on every page. */
   document.querySelectorAll('.brand img').forEach(img=>{
     img.src='/assets/images/KCM%202027%20Logo.png';
     img.alt='Kingston City Marathon';
   });
   const brandStyle=document.createElement('style');
   brandStyle.textContent=`
-    .nav{min-height:104px!important;padding-block:8px!important;}
-    .brand{min-width:300px!important;width:300px!important;overflow:visible!important;}
-    .brand img{content:none!important;width:300px!important;height:88px!important;max-width:none!important;object-fit:contain!important;object-position:left center!important;display:block!important;image-rendering:auto!important;}
+    .nav{min-height:122px!important;padding-block:5px!important;}
+    .brand{min-width:390px!important;width:390px!important;height:110px!important;overflow:visible!important;display:flex!important;align-items:center!important;}
+    .brand img{content:none!important;width:390px!important;height:110px!important;max-width:none!important;max-height:none!important;object-fit:contain!important;object-position:left center!important;display:block!important;background:transparent!important;border:0!important;box-shadow:none!important;image-rendering:auto!important;}
+    @media (max-width:1380px){
+      .nav{min-height:112px!important;}
+      .brand{min-width:330px!important;width:330px!important;height:100px!important;}
+      .brand img{width:330px!important;height:100px!important;}
+    }
     @media (max-width:1180px){
-      .nav{min-height:98px!important;}
-      .brand{min-width:270px!important;width:270px!important;}
-      .brand img{width:270px!important;height:82px!important;}
+      .nav{min-height:104px!important;}
+      .brand{min-width:300px!important;width:300px!important;height:92px!important;}
+      .brand img{width:300px!important;height:92px!important;}
     }
     @media (max-width:680px){
-      .nav{min-height:86px!important;padding-block:6px!important;}
-      .brand{min-width:0!important;width:min(255px,72vw)!important;}
-      .brand img{width:100%!important;height:auto!important;max-height:74px!important;}
+      .nav{min-height:94px!important;padding-block:4px!important;}
+      .brand{min-width:0!important;width:min(285px,76vw)!important;height:82px!important;}
+      .brand img{width:100%!important;height:82px!important;max-width:none!important;max-height:none!important;}
     }
   `;
   document.head.appendChild(brandStyle);
