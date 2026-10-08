@@ -1,4 +1,25 @@
 document.addEventListener('DOMContentLoaded',()=>{
+  /* Use the approved KCR logo in the site header on every page. This intentionally
+     changes only the navigation/header logo; campaign and carousel artwork are untouched. */
+  document.querySelectorAll('.brand img').forEach(img=>{
+    img.src='/assets/images/kcr-header-logo.jpg';
+    img.alt='Kingston City Marathon';
+  });
+  const brandStyle=document.createElement('style');
+  brandStyle.textContent=`
+    .brand{min-width:250px!important;}
+    .brand img{content:none!important;width:auto!important;height:76px!important;max-width:250px!important;object-fit:contain!important;object-position:left center!important;}
+    @media (max-width:1180px){
+      .brand{min-width:230px!important;}
+      .brand img{height:72px!important;max-width:230px!important;}
+    }
+    @media (max-width:680px){
+      .brand{min-width:0!important;}
+      .brand img{height:62px!important;max-width:min(220px,68vw)!important;}
+    }
+  `;
+  document.head.appendChild(brandStyle);
+
   const t=document.querySelector('.menu-toggle'),n=document.querySelector('.navlinks');
   if(t&&n){
     t.setAttribute('aria-expanded','false');
