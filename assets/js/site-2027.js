@@ -1,21 +1,24 @@
 document.addEventListener('DOMContentLoaded',()=>{
-  /* Use the approved KCR logo in the site header on every page. This intentionally
+  /* Use the approved transparent KCR logo in the site header on every page. This intentionally
      changes only the navigation/header logo; campaign and carousel artwork are untouched. */
   document.querySelectorAll('.brand img').forEach(img=>{
-    img.src='/assets/images/kcr-header-logo.jpg';
+    img.src='/assets/images/KCM%202027%20Logo.png';
     img.alt='Kingston City Marathon';
   });
   const brandStyle=document.createElement('style');
   brandStyle.textContent=`
-    .brand{min-width:250px!important;}
-    .brand img{content:none!important;width:auto!important;height:76px!important;max-width:250px!important;object-fit:contain!important;object-position:left center!important;}
+    .nav{min-height:104px!important;padding-block:8px!important;}
+    .brand{min-width:300px!important;width:300px!important;overflow:visible!important;}
+    .brand img{content:none!important;width:300px!important;height:88px!important;max-width:none!important;object-fit:contain!important;object-position:left center!important;display:block!important;image-rendering:auto!important;}
     @media (max-width:1180px){
-      .brand{min-width:230px!important;}
-      .brand img{height:72px!important;max-width:230px!important;}
+      .nav{min-height:98px!important;}
+      .brand{min-width:270px!important;width:270px!important;}
+      .brand img{width:270px!important;height:82px!important;}
     }
     @media (max-width:680px){
-      .brand{min-width:0!important;}
-      .brand img{height:62px!important;max-width:min(220px,68vw)!important;}
+      .nav{min-height:86px!important;padding-block:6px!important;}
+      .brand{min-width:0!important;width:min(255px,72vw)!important;}
+      .brand img{width:100%!important;height:auto!important;max-height:74px!important;}
     }
   `;
   document.head.appendChild(brandStyle);
