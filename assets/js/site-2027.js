@@ -7,6 +7,40 @@ document.addEventListener('DOMContentLoaded',()=>{
     n.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
   }
   document.querySelectorAll('[data-year]').forEach(el=>el.textContent=new Date().getFullYear());
+
+  /* Homepage hero CTA row: the base hero copy is intentionally narrow for the artwork,
+     so allow the CTA row itself to use the extra horizontal space on desktop/tablet. */
+  const heroButtons=document.querySelector('.campaign-copy > .btns');
+  if(heroButtons){
+    const heroStyle=document.createElement('style');
+    heroStyle.textContent=`
+      @media (min-width:681px){
+        .campaign-copy>.btns{
+          display:flex!important;
+          flex-flow:row nowrap!important;
+          align-items:center!important;
+          gap:10px!important;
+          width:max-content!important;
+          max-width:none!important;
+        }
+        .campaign-copy>.btns .btn{
+          flex:0 0 auto!important;
+          white-space:nowrap!important;
+          padding:12px 16px!important;
+          font-size:13px!important;
+          gap:8px!important;
+        }
+      }
+      @media (min-width:1181px){
+        .campaign-copy>.btns .btn{
+          padding:13px 18px!important;
+          font-size:13.5px!important;
+        }
+      }
+    `;
+    document.head.appendChild(heroStyle);
+  }
+
   const carousel=document.querySelector('[data-photo-carousel]');
   if(carousel){
     const track=carousel.querySelector('.photo-track'),slides=[...carousel.querySelectorAll('.photo-slide')],dots=[...carousel.querySelectorAll('.photo-dot')];
