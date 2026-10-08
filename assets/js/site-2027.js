@@ -1,31 +1,31 @@
-document.addEventListener('DOMContentLoaded',()=>{
-  /* Use the approved transparent KCR logo in the site header on every page. */
-  document.querySelectorAll('.brand img').forEach(img=>{
-    img.src='/assets/images/KCM%202027%20Logo.png';
-    img.alt='Kingston City Marathon';
-  });
-  const brandStyle=document.createElement('style');
-  brandStyle.textContent=`
-    .nav{min-height:122px!important;padding-block:5px!important;}
-    .brand{min-width:390px!important;width:390px!important;height:110px!important;overflow:visible!important;display:flex!important;align-items:center!important;}
-    .brand img{content:none!important;width:390px!important;height:110px!important;max-width:none!important;max-height:none!important;object-fit:contain!important;object-position:left center!important;display:block!important;background:transparent!important;border:0!important;box-shadow:none!important;image-rendering:auto!important;}
-    @media (max-width:1380px){
-      .nav{min-height:112px!important;}
-      .brand{min-width:330px!important;width:330px!important;height:100px!important;}
-      .brand img{width:330px!important;height:100px!important;}
-    }
+/* Apply the approved header artwork immediately. The base stylesheet still contains the
+   legacy logo as a CSS content image, so this override must run before DOMContentLoaded. */
+(()=>{
+  const headerStyle=document.createElement('style');
+  headerStyle.textContent=`
+    .nav{min-height:100px!important;padding-block:8px!important;gap:16px!important;}
+    .brand{min-width:285px!important;width:285px!important;height:84px!important;display:flex!important;align-items:center!important;overflow:visible!important;flex:0 0 285px!important;}
+    .brand img{content:url('/assets/images/KCM%202027%20Logo.png')!important;width:285px!important;height:84px!important;max-width:none!important;max-height:none!important;object-fit:contain!important;object-position:left center!important;display:block!important;background:transparent!important;border:0!important;box-shadow:none!important;image-rendering:auto!important;}
+    .navlinks{flex:1 1 auto!important;min-width:0!important;gap:3px!important;}
+    .navlinks a{white-space:nowrap!important;padding:9px 10px!important;}
     @media (max-width:1180px){
-      .nav{min-height:104px!important;}
-      .brand{min-width:300px!important;width:300px!important;height:92px!important;}
-      .brand img{width:300px!important;height:92px!important;}
+      .nav{min-height:94px!important;padding-block:7px!important;}
+      .brand{min-width:260px!important;width:260px!important;height:78px!important;flex-basis:260px!important;}
+      .brand img{width:260px!important;height:78px!important;}
+      .navlinks{top:94px!important;}
     }
     @media (max-width:680px){
-      .nav{min-height:94px!important;padding-block:4px!important;}
-      .brand{min-width:0!important;width:min(285px,76vw)!important;height:82px!important;}
-      .brand img{width:100%!important;height:82px!important;max-width:none!important;max-height:none!important;}
+      .nav{min-height:84px!important;padding-block:5px!important;}
+      .brand{min-width:0!important;width:min(245px,70vw)!important;height:72px!important;flex:0 1 auto!important;}
+      .brand img{width:100%!important;height:72px!important;}
+      .navlinks{top:84px!important;}
     }
   `;
-  document.head.appendChild(brandStyle);
+  document.head.appendChild(headerStyle);
+})();
+
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.brand img').forEach(img=>img.alt='Kingston City Marathon');
 
   const t=document.querySelector('.menu-toggle'),n=document.querySelector('.navlinks');
   if(t&&n){
