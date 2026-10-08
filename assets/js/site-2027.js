@@ -1,29 +1,29 @@
-/* Header logo: use the verified transparent PNG directly. */
+/* Header logo: explicitly override the legacy CSS content replacement with the approved logo. */
 (()=>{
   const headerStyle=document.createElement('style');
   headerStyle.textContent=`
     .nav{min-height:104px!important;padding-block:8px!important;gap:20px!important;}
     .brand{width:320px!important;min-width:320px!important;height:88px!important;flex:0 0 320px!important;display:flex!important;align-items:center!important;overflow:visible!important;}
-    .brand>img{content:none!important;display:block!important;width:320px!important;height:auto!important;max-width:320px!important;max-height:88px!important;object-fit:contain!important;object-position:left center!important;background:transparent!important;border:0!important;outline:0!important;box-shadow:none!important;}
+    .brand>img{content:url('/assets/images/kcr-logo-clean.png?v=20261008d')!important;display:block!important;width:320px!important;height:88px!important;max-width:320px!important;max-height:88px!important;object-fit:contain!important;object-position:left center!important;background:transparent!important;border:0!important;outline:0!important;box-shadow:none!important;}
     .navlinks{flex:1 1 auto!important;min-width:0!important;display:flex;flex-wrap:nowrap!important;align-items:center!important;justify-content:flex-end!important;gap:3px!important;}
     .navlinks a{white-space:nowrap!important;padding:9px 10px!important;}
     @media(max-width:1320px) and (min-width:1181px){
       .brand{width:280px!important;min-width:280px!important;flex-basis:280px!important;}
-      .brand>img{width:280px!important;max-width:280px!important;max-height:82px!important;}
+      .brand>img{width:280px!important;height:82px!important;max-width:280px!important;max-height:82px!important;}
       .nav{gap:12px!important;}
       .navlinks a{padding:9px 8px!important;font-size:15px!important;}
     }
     @media(max-width:1180px){
       .nav{min-height:94px!important;padding-block:6px!important;}
       .brand{width:285px!important;min-width:0!important;height:80px!important;flex:0 1 285px!important;}
-      .brand>img{width:285px!important;max-width:285px!important;max-height:80px!important;}
+      .brand>img{width:285px!important;height:80px!important;max-width:285px!important;max-height:80px!important;}
       .navlinks{display:none!important;top:94px!important;}
       .navlinks.open{display:flex!important;}
     }
     @media(max-width:680px){
       .nav{min-height:84px!important;padding-block:5px!important;}
       .brand{width:min(250px,72vw)!important;height:72px!important;flex:0 1 auto!important;}
-      .brand>img{width:100%!important;max-width:100%!important;max-height:72px!important;}
+      .brand>img{width:100%!important;height:72px!important;max-width:100%!important;max-height:72px!important;}
       .navlinks{top:84px!important;}
     }
   `;
@@ -32,7 +32,7 @@
 
 document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.brand img').forEach(img=>{
-    img.src='/assets/images/kcr-logo-clean.png?v=fc745aa';
+    img.src='/assets/images/kcr-logo-clean.png?v=20261008d';
     img.alt='Kingston City Marathon';
     img.removeAttribute('width');
     img.removeAttribute('height');
