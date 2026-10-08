@@ -8,6 +8,22 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
   document.querySelectorAll('[data-year]').forEach(el=>el.textContent=new Date().getFullYear());
 
+  /* Keep visitors on KCR when following third-party website links. Internal links,
+     mailto:, tel:, hashes and other non-http(s) schemes are left unchanged. */
+  document.querySelectorAll('a[href]').forEach(a=>{
+    const href=a.getAttribute('href');
+    if(!href||href.startsWith('#'))return;
+    try{
+      const url=new URL(href,window.location.href);
+      if((url.protocol==='http:'||url.protocol==='https:')&&url.origin!==window.location.origin){
+        a.target='_blank';
+        const rel=new Set((a.getAttribute('rel')||'').split(/\s+/).filter(Boolean));
+        rel.add('noopener');rel.add('noreferrer');
+        a.setAttribute('rel',[...rel].join(' '));
+      }
+    }catch(e){}
+  });
+
   /* Homepage hero CTA row: the base hero copy is intentionally narrow for the artwork,
      so allow the CTA row itself to use the extra horizontal space on desktop/tablet. */
   const heroButtons=document.querySelector('.campaign-copy > .btns');
