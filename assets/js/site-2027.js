@@ -1,23 +1,32 @@
-/* Apply the approved header artwork immediately. The base stylesheet still contains the
-   legacy logo as a CSS content image, so this override must run before DOMContentLoaded. */
+/* Header logo: the supplied source artwork in the repository has a white outer canvas
+   and a #001830 rectangle baked into the bitmap. Build the transparent header mark
+   from that source at its native resolution instead of fighting it with CSS content:. */
 (()=>{
   const headerStyle=document.createElement('style');
   headerStyle.textContent=`
-    .nav{min-height:100px!important;padding-block:8px!important;gap:16px!important;}
-    .brand{min-width:285px!important;width:285px!important;height:84px!important;display:flex!important;align-items:center!important;overflow:visible!important;flex:0 0 285px!important;}
-    .brand img{content:url('/assets/images/KCM%202027%20Logo.png')!important;width:285px!important;height:84px!important;max-width:none!important;max-height:none!important;object-fit:contain!important;object-position:left center!important;display:block!important;background:transparent!important;border:0!important;box-shadow:none!important;image-rendering:auto!important;}
-    .navlinks{flex:1 1 auto!important;min-width:0!important;gap:3px!important;}
+    .nav{min-height:104px!important;padding-block:8px!important;gap:20px!important;}
+    .brand{width:320px!important;min-width:320px!important;height:88px!important;flex:0 0 320px!important;display:flex!important;align-items:center!important;overflow:visible!important;}
+    .brand>img{display:none!important;}
+    .brand-logo-canvas{display:block!important;width:320px!important;height:auto!important;max-height:88px!important;object-fit:contain!important;background:transparent!important;}
+    .navlinks{flex:1 1 auto!important;min-width:0!important;display:flex;flex-wrap:nowrap!important;align-items:center!important;justify-content:flex-end!important;gap:3px!important;}
     .navlinks a{white-space:nowrap!important;padding:9px 10px!important;}
-    @media (max-width:1180px){
-      .nav{min-height:94px!important;padding-block:7px!important;}
-      .brand{min-width:260px!important;width:260px!important;height:78px!important;flex-basis:260px!important;}
-      .brand img{width:260px!important;height:78px!important;}
-      .navlinks{top:94px!important;}
+    @media(max-width:1320px) and (min-width:1181px){
+      .brand{width:280px!important;min-width:280px!important;flex-basis:280px!important;}
+      .brand-logo-canvas{width:280px!important;max-height:82px!important;}
+      .nav{gap:12px!important;}
+      .navlinks a{padding:9px 8px!important;font-size:15px!important;}
     }
-    @media (max-width:680px){
+    @media(max-width:1180px){
+      .nav{min-height:94px!important;padding-block:6px!important;}
+      .brand{width:285px!important;min-width:0!important;height:80px!important;flex:0 1 285px!important;}
+      .brand-logo-canvas{width:285px!important;max-height:80px!important;}
+      .navlinks{display:none!important;top:94px!important;}
+      .navlinks.open{display:flex!important;}
+    }
+    @media(max-width:680px){
       .nav{min-height:84px!important;padding-block:5px!important;}
-      .brand{min-width:0!important;width:min(245px,70vw)!important;height:72px!important;flex:0 1 auto!important;}
-      .brand img{width:100%!important;height:72px!important;}
+      .brand{width:min(250px,72vw)!important;height:72px!important;flex:0 1 auto!important;}
+      .brand-logo-canvas{width:100%!important;max-height:72px!important;}
       .navlinks{top:84px!important;}
     }
   `;
@@ -25,7 +34,38 @@
 })();
 
 document.addEventListener('DOMContentLoaded',()=>{
-  document.querySelectorAll('.brand img').forEach(img=>img.alt='Kingston City Marathon');
+  /* The repository's KCM 2027 Logo.png is 1041x781. The actual logo occupies the
+     833x388 rectangle at x=85,y=148. Remove only the baked #001830 background and
+     preserve the artwork pixels at native resolution. At a 320px display width this
+     still renders at well over 2x device resolution. */
+  document.querySelectorAll('.brand').forEach(brand=>{
+    const old=brand.querySelector('img');
+    if(!old)return;
+    const source=new Image();
+    source.onload=()=>{
+      const sx=85,sy=148,sw=833,sh=388;
+      const canvas=document.createElement('canvas');
+      canvas.width=sw;canvas.height=sh;
+      canvas.className='brand-logo-canvas';
+      canvas.setAttribute('role','img');
+      canvas.setAttribute('aria-label','Kingston City Marathon');
+      const ctx=canvas.getContext('2d',{willReadFrequently:true});
+      ctx.drawImage(source,sx,sy,sw,sh,0,0,sw,sh);
+      const frame=ctx.getImageData(0,0,sw,sh),d=frame.data;
+      for(let i=0;i<d.length;i+=4){
+        const r=d[i],g=d[i+1],b=d[i+2];
+        /* Chroma-key the navy field, including JPEG/PNG antialias variation, while
+           leaving the green/yellow/red/white logo artwork untouched. */
+        if(r<24 && g<48 && b>28 && b<82 && b>g){
+          const dist=Math.abs(r-0)+Math.abs(g-24)+Math.abs(b-48);
+          if(dist<58)d[i+3]=0;
+        }
+      }
+      ctx.putImageData(frame,0,0);
+      old.replaceWith(canvas);
+    };
+    source.src='/assets/images/KCM%202027%20Logo.png';
+  });
 
   const t=document.querySelector('.menu-toggle'),n=document.querySelector('.navlinks');
   if(t&&n){
@@ -36,8 +76,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
   document.querySelectorAll('[data-year]').forEach(el=>el.textContent=new Date().getFullYear());
 
-  /* Keep visitors on KCR when following third-party website links. Internal links,
-     mailto:, tel:, hashes and other non-http(s) schemes are left unchanged. */
   document.querySelectorAll('a[href]').forEach(a=>{
     const href=a.getAttribute('href');
     if(!href||href.startsWith('#'))return;
@@ -52,35 +90,15 @@ document.addEventListener('DOMContentLoaded',()=>{
     }catch(e){}
   });
 
-  /* Homepage hero CTA row: the base hero copy is intentionally narrow for the artwork,
-     so allow the CTA row itself to use the extra horizontal space on desktop/tablet. */
   const heroButtons=document.querySelector('.campaign-copy > .btns');
   if(heroButtons){
     const heroStyle=document.createElement('style');
     heroStyle.textContent=`
       @media (min-width:681px){
-        .campaign-copy>.btns{
-          display:flex!important;
-          flex-flow:row nowrap!important;
-          align-items:center!important;
-          gap:10px!important;
-          width:max-content!important;
-          max-width:none!important;
-        }
-        .campaign-copy>.btns .btn{
-          flex:0 0 auto!important;
-          white-space:nowrap!important;
-          padding:12px 16px!important;
-          font-size:13px!important;
-          gap:8px!important;
-        }
+        .campaign-copy>.btns{display:flex!important;flex-flow:row nowrap!important;align-items:center!important;gap:10px!important;width:max-content!important;max-width:none!important;}
+        .campaign-copy>.btns .btn{flex:0 0 auto!important;white-space:nowrap!important;padding:12px 16px!important;font-size:13px!important;gap:8px!important;}
       }
-      @media (min-width:1181px){
-        .campaign-copy>.btns .btn{
-          padding:13px 18px!important;
-          font-size:13.5px!important;
-        }
-      }
+      @media (min-width:1181px){.campaign-copy>.btns .btn{padding:13px 18px!important;font-size:13.5px!important;}}
     `;
     document.head.appendChild(heroStyle);
   }
