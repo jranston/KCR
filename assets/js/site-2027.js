@@ -1,6 +1,5 @@
-/* Header logo: the supplied source artwork in the repository has a white outer canvas
-   and a #001830 rectangle baked into the bitmap. Build the transparent header mark
-   from that source at its native resolution instead of fighting it with CSS content:. */
+/* Header logo: render the approved mark for a white navigation background without
+   changing its typography, proportions or graphic styling. */
 (()=>{
   const headerStyle=document.createElement('style');
   headerStyle.textContent=`
@@ -34,10 +33,10 @@
 })();
 
 document.addEventListener('DOMContentLoaded',()=>{
-  /* The repository's KCM 2027 Logo.png is 1041x781. The actual logo occupies the
-     833x388 rectangle at x=85,y=148. Remove only the baked #001830 background and
-     preserve the artwork pixels at native resolution. At a 320px display width this
-     still renders at well over 2x device resolution. */
+  /* Build the white-background version directly from the approved source artwork.
+     The actual logo occupies x=85,y=148,w=833,h=388 in the source. Remove the navy
+     field and recolour only the white lettering area to KCR navy. The bird, runner,
+     ribbon, red title and gold rules remain unchanged. */
   document.querySelectorAll('.brand').forEach(brand=>{
     const old=brand.querySelector('img');
     if(!old)return;
@@ -53,12 +52,17 @@ document.addEventListener('DOMContentLoaded',()=>{
       ctx.drawImage(source,sx,sy,sw,sh,0,0,sw,sh);
       const frame=ctx.getImageData(0,0,sw,sh),d=frame.data;
       for(let i=0;i<d.length;i+=4){
+        const px=(i/4)%sw;
         const r=d[i],g=d[i+1],b=d[i+2];
-        /* Chroma-key the navy field, including JPEG/PNG antialias variation, while
-           leaving the green/yellow/red/white logo artwork untouched. */
+        /* Remove the original #001830 field, including antialias variation. */
         if(r<24 && g<48 && b>28 && b<82 && b>g){
           const dist=Math.abs(r-0)+Math.abs(g-24)+Math.abs(b-48);
-          if(dist<58)d[i+3]=0;
+          if(dist<58){d[i+3]=0;continue;}
+        }
+        /* On the typography side only, change near-white lettering to KCR navy.
+           This preserves the white contour treatment around the bird/runner artwork. */
+        if(px<545 && r>218 && g>218 && b>218 && d[i+3]>20){
+          d[i]=0;d[i+1]=27;d[i+2]=51;
         }
       }
       ctx.putImageData(frame,0,0);
