@@ -56,6 +56,13 @@ document.addEventListener('DOMContentLoaded',()=>{
     img.removeAttribute('height');
   });
 
+  /* Use the approved revised Pirates versus Heroes artwork in the homepage theme section. */
+  const themeImage=document.querySelector('.theme-photo-panel img');
+  if(themeImage){
+    themeImage.src='/assets/images/kcr-theme-2027-final-v2.png';
+    themeImage.alt='Kingston City Marathon 2027 Pirates versus Heroes campaign featuring a diverse group of runners in Kingston';
+  }
+
   const t=document.querySelector('.menu-toggle'),n=document.querySelector('.navlinks');
   if(t&&n){
     t.setAttribute('aria-expanded','false');
