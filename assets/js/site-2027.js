@@ -35,8 +35,10 @@
   const campaignStyle=document.createElement('style');
   campaignStyle.textContent=`
     .campaign-hero-bg{background-image:url('/assets/images/kcm-2027-hero-desktop.png')!important;background-position:center center!important;}
+    .campaign-hero-bg::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,#002542 0,rgba(0,37,66,.72) 3%,rgba(0,37,66,.22) 8%,rgba(0,37,66,0) 14%,rgba(0,37,66,0) 82%,rgba(0,37,66,.28) 91%,rgba(0,37,66,.82) 97%,#002542 100%),linear-gradient(to right,#002542 0,rgba(0,37,66,.78) 8%,rgba(0,37,66,.35) 20%,rgba(0,37,66,0) 36%);}
     @media(max-width:900px){
       .campaign-hero-bg{background-image:url('/assets/images/kcm-2027-hero-mobile.png')!important;background-size:contain!important;background-repeat:no-repeat!important;background-position:center center!important;background-color:#002542!important;}
+      .campaign-hero-bg::after{display:none!important;}
     }
   `;
   document.head.appendChild(campaignStyle);
