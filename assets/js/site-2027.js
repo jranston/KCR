@@ -30,6 +30,18 @@
   document.head.appendChild(headerStyle);
 })();
 
+/* Responsive campaign artwork: desktop keeps the dark copy-safe composition; tablet/mobile uses the dedicated full campaign composition. */
+(()=>{
+  const campaignStyle=document.createElement('style');
+  campaignStyle.textContent=`
+    .campaign-hero-bg{background-image:url('/assets/images/kcm-2027-hero-desktop.png')!important;background-position:center center!important;}
+    @media(max-width:900px){
+      .campaign-hero-bg{background-image:url('/assets/images/kcm-2027-hero-mobile.png')!important;background-size:contain!important;background-repeat:no-repeat!important;background-position:center center!important;background-color:#002542!important;}
+    }
+  `;
+  document.head.appendChild(campaignStyle);
+})();
+
 document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.brand img').forEach(img=>{
     img.src='/assets/images/kcr-logo-clean.png?v=20261008d';
