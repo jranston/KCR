@@ -36,7 +36,6 @@
   campaignStyle.textContent=`
     .campaign-hero-bg{background-image:url('/assets/images/kcm-2027-hero-desktop.png')!important;background-position:center center!important;}
     .campaign-hero-bg::after{content:"";position:absolute;inset:0;display:block!important;pointer-events:none;z-index:1;background:linear-gradient(to bottom,#002542 0%,rgba(0,37,66,.96) 2.5%,rgba(0,37,66,.72) 7%,rgba(0,37,66,.28) 12%,rgba(0,37,66,0) 19%,rgba(0,37,66,0) 76%,rgba(0,37,66,.28) 84%,rgba(0,37,66,.72) 91%,rgba(0,37,66,.96) 97%,#002542 100%),linear-gradient(to right,#002542 0%,rgba(0,37,66,.96) 5%,rgba(0,37,66,.78) 13%,rgba(0,37,66,.42) 24%,rgba(0,37,66,.12) 34%,rgba(0,37,66,0) 43%);}
-    /* At laptop/common desktop widths the artwork is contained inside the taller hero. Fade at the actual image boundaries, not the hero boundaries. */
     @media(min-width:901px) and (max-width:1600px){
       .campaign-hero-bg::after{background:linear-gradient(to bottom,#002542 0%,#002542 11%,rgba(0,37,66,.98) 14%,rgba(0,37,66,.78) 17%,rgba(0,37,66,.38) 20%,rgba(0,37,66,0) 25%,rgba(0,37,66,0) 75%,rgba(0,37,66,.38) 80%,rgba(0,37,66,.78) 83%,rgba(0,37,66,.98) 86%,#002542 89%,#002542 100%),linear-gradient(to right,#002542 0%,rgba(0,37,66,.98) 5%,rgba(0,37,66,.82) 13%,rgba(0,37,66,.46) 24%,rgba(0,37,66,.14) 34%,rgba(0,37,66,0) 44%);}
     }
@@ -61,6 +60,41 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(themeImage){
     themeImage.src='/assets/images/kcr-theme-2027-final-v2.png';
     themeImage.alt='Kingston City Marathon 2027 Pirates versus Heroes campaign featuring a diverse group of runners in Kingston';
+  }
+
+  /* Travel page: give the three official travel advisors the same branded-card treatment as the Kingston hotels. */
+  const advisorGrid=document.querySelector('#packages .grid.grid-3');
+  if(advisorGrid){
+    const advisorStyle=document.createElement('style');
+    advisorStyle.textContent=`
+      .advisor-card{display:flex;flex-direction:column;align-items:center;text-align:center;min-height:300px}
+      .advisor-logo{height:105px;width:100%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;padding:6px 12px}
+      .advisor-wordmark{height:92px;width:100%;display:flex;align-items:center;justify-content:center;font-family:Montserrat,sans-serif;line-height:1}
+      .advisor-card h3{margin-top:0}.advisor-card p{flex:1}.advisor-card .advisor-link{margin-top:12px}
+      .go-wordmark{font-size:28px;font-weight:900;font-style:italic;letter-spacing:-.04em;color:#0878bd}.go-wordmark strong{color:#ef3d33}.go-wordmark small{display:block;font-size:11px;font-style:normal;letter-spacing:.12em;color:#16324a;margin-top:7px}
+      .trafalgar-wordmark{font-family:Georgia,serif;font-size:38px;font-weight:700;font-style:italic;color:#c72026;text-shadow:0 1px 0 #7d1015}.trafalgar-wordmark small{display:block;font-family:Montserrat,sans-serif;font-size:10px;font-style:normal;letter-spacing:.2em;color:#333;margin-top:8px}
+      .lfp-wordmark{flex-direction:column;color:#123b72}.lfp-wordmark .lfp{font-size:42px;font-weight:900;letter-spacing:-.05em}.lfp-wordmark .lfp-name{font-size:12px;font-weight:800;letter-spacing:.08em;margin-top:6px}.lfp-wordmark .lfp-tag{font-size:9px;font-weight:600;letter-spacing:.08em;color:#d67b20;margin-top:5px}
+    `;
+    document.head.appendChild(advisorStyle);
+    advisorGrid.innerHTML=`
+      <div class="card advisor-card">
+        <div class="advisor-logo"><div class="advisor-wordmark go-wordmark" role="img" aria-label="GO! Jamaica Travel"><div><strong>GO!</strong> JAMAICA TRAVEL<small>TRAVEL COMPANY LIMITED</small></div></div></div>
+        <h3>GO! Jamaica Travel</h3>
+        <p>Kingston-based travel agency offering vacation packages, hotels, flights, tours, transfers and destination management services.</p>
+        <a class="btn btn-primary advisor-link" href="https://gojamaicatravel.travel/" target="_blank" rel="noopener noreferrer">Visit Travel Advisor Website ↗</a>
+      </div>
+      <div class="card advisor-card">
+        <div class="advisor-logo"><div class="advisor-wordmark trafalgar-wordmark" role="img" aria-label="Trafalgar Travel"><div>Trafalgar<small>TRAVEL LIMITED</small></div></div></div>
+        <h3>Trafalgar Travel</h3>
+        <p>Full-service Jamaican travel management company assisting with flights, hotels, car rentals, cruises, group travel and destination management.</p>
+        <a class="btn btn-primary advisor-link" href="https://www.trafalgartmc.com/" target="_blank" rel="noopener noreferrer">Visit Travel Advisor Website ↗</a>
+      </div>
+      <div class="card advisor-card">
+        <div class="advisor-logo"><div class="advisor-wordmark lfp-wordmark" role="img" aria-label="Leisure for Pleasure Holidays and Tours"><div class="lfp">LFP</div><div class="lfp-name">LEISURE FOR PLEASURE</div><div class="lfp-tag">HOLIDAYS &amp; TOURS</div></div></div>
+        <h3>Leisure for Pleasure</h3>
+        <p>Jamaican travel and destination management company offering hotel stays, vacation packages, island tours, transfers and customized experiences.</p>
+        <a class="btn btn-primary advisor-link" href="https://leisureja.com/" target="_blank" rel="noopener noreferrer">Visit Travel Advisor Website ↗</a>
+      </div>`;
   }
 
   const t=document.querySelector('.menu-toggle'),n=document.querySelector('.navlinks');
