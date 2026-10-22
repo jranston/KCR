@@ -7,7 +7,8 @@
     .brand>img{content:url('/assets/images/kcr-logo-clean.png?v=20261008d')!important;display:block!important;width:320px!important;height:88px!important;max-width:320px!important;max-height:88px!important;object-fit:contain!important;object-position:left center!important;background:transparent!important;border:0!important;outline:0!important;box-shadow:none!important;}
     .navlinks{flex:1 1 auto!important;min-width:0!important;display:flex;flex-wrap:nowrap!important;align-items:center!important;justify-content:flex-end!important;gap:3px!important;}
     .navlinks a{white-space:nowrap!important;padding:9px 10px!important;}
-    @media(max-width:1320px) and (min-width:1181px){.brand{width:280px!important;min-width:280px!important;flex-basis:280px!important}.brand>img{width:280px!important;height:82px!important;max-width:280px!important;max-height:82px!important}.nav{gap:12px!important}.navlinks a{padding:9px 8px!important;font-size:15px!important}}
+    .kcr-social-links{display:flex;align-items:center;gap:10px;margin-top:14px}.kcr-social-links a{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.3);color:#fff;transition:background .18s ease,border-color .18s ease,transform .18s ease}.kcr-social-links a:hover,.kcr-social-links a:focus-visible{background:#f3b61f;border-color:#f3b61f;color:#001b33;transform:translateY(-2px)}.kcr-social-links svg{width:19px;height:19px;display:block;fill:currentColor}
+    @media(max-width:1320px) and (min-width:1181px){.brand{width:280px!important;min-width:280px!important;flex-basis:280px!important}.brand>img{width:280px!important;height:82px!important;max-width:280px!important;max-height:82px!important}.nav{gap:12px!important}.navlinks a{padding:9px 7px!important;font-size:14px!important}}
     @media(max-width:1180px){.nav{min-height:94px!important;padding-block:6px!important}.brand{width:285px!important;min-width:0!important;height:80px!important;flex:0 1 285px!important}.brand>img{width:285px!important;height:80px!important;max-width:285px!important;max-height:80px!important}.navlinks{display:none!important;top:94px!important}.navlinks.open{display:flex!important}}
     @media(max-width:680px){.nav{min-height:84px!important;padding-block:5px!important}.brand{width:min(250px,72vw)!important;height:72px!important;flex:0 1 auto!important}.brand>img{width:100%!important;height:72px!important;max-width:100%!important;max-height:72px!important}.navlinks{top:84px!important}}
   `;
@@ -28,6 +29,24 @@
 
 document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.brand img').forEach(img=>{img.src='/assets/images/kcr-logo-clean.png?v=20261008d';img.alt='Kingston City Marathon';img.removeAttribute('width');img.removeAttribute('height')});
+
+  /* Keep Volunteer available from the primary navigation on every page. */
+  document.querySelectorAll('.navlinks').forEach(nav=>{if(!nav.querySelector('a[href="/volunteer/"]')){const contact=nav.querySelector('a[href="/contact/"]')?.closest('li');const li=document.createElement('li');li.innerHTML='<a href="/volunteer/">Volunteer</a>';if(contact)nav.insertBefore(li,contact);else nav.appendChild(li)}});
+
+  /* Normalize footer quick links and add the confirmed official social profiles. */
+  document.querySelectorAll('.footer').forEach(footer=>{
+    const columns=[...footer.querySelectorAll('.footer-top > div')];
+    let quick=columns.find(col=>/quick links|explore/i.test(col.querySelector('h4')?.textContent||''));
+    if(quick){
+      const p=quick.querySelector('p')||quick.appendChild(document.createElement('p'));
+      if(!p.querySelector('a[href="/travel/"]'))p.insertAdjacentHTML('beforeend','<br><a href="/travel/">Travel</a>');
+      if(!p.querySelector('a[href="/volunteer/"]'))p.insertAdjacentHTML('beforeend','<br><a href="/volunteer/">Volunteer</a>');
+    }
+    if(!footer.querySelector('.kcr-social-links')){
+      const contact=columns.find(col=>/contact/i.test(col.querySelector('h4')?.textContent||''))||columns[0];
+      if(contact){const social=document.createElement('div');social.className='kcr-social-links';social.setAttribute('aria-label','Kingston City Marathon social media');social.innerHTML='<a href="https://www.facebook.com/KingstonCityRun/" aria-label="Kingston City Run on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-9h3l.5-3.5h-3.5V7.25c0-1 .28-1.68 1.75-1.68H17V2.45c-.3-.04-1.35-.13-2.57-.13-2.55 0-4.3 1.56-4.3 4.42V9.5H7.25V13h2.88v9h3.37Z"/></svg></a><a href="https://www.instagram.com/kingstoncitymarathon" aria-label="Kingston City Marathon on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 2h9.6A5.2 5.2 0 0 1 22 7.2v9.6a5.2 5.2 0 0 1-5.2 5.2H7.2A5.2 5.2 0 0 1 2 16.8V7.2A5.2 5.2 0 0 1 7.2 2Zm-.18 2A3.02 3.02 0 0 0 4 7.02v9.96A3.02 3.02 0 0 0 7.02 20h9.96A3.02 3.02 0 0 0 20 16.98V7.02A3.02 3.02 0 0 0 16.98 4H7.02ZM17.5 5.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg></a>';contact.appendChild(social)}
+    }
+  });
 
   const themeImage=document.querySelector('.theme-photo-panel img');
   if(themeImage){themeImage.src='/assets/images/kcr-theme-2027-final-v2.png';themeImage.alt='Kingston City Marathon 2027 Pirates versus Heroes campaign featuring a diverse group of runners in Kingston'}
