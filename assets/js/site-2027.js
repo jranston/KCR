@@ -7,7 +7,8 @@
     .brand>img{content:url('/assets/images/kcr-logo-clean.png?v=20261008d')!important;display:block!important;width:320px!important;height:88px!important;max-width:320px!important;max-height:88px!important;object-fit:contain!important;object-position:left center!important;background:transparent!important;border:0!important;outline:0!important;box-shadow:none!important;}
     .navlinks{flex:1 1 auto!important;min-width:0!important;display:flex;flex-wrap:nowrap!important;align-items:center!important;justify-content:flex-end!important;gap:3px!important;}
     .navlinks a{white-space:nowrap!important;padding:9px 10px!important;}
-    @media(max-width:1320px) and (min-width:1181px){.brand{width:280px!important;min-width:280px!important;flex-basis:280px!important}.brand>img{width:280px!important;height:82px!important;max-width:280px!important;max-height:82px!important}.nav{gap:12px!important}.navlinks a{padding:9px 8px!important;font-size:15px!important}}
+    .kcr-social-links{display:flex!important;align-items:center!important;gap:10px!important;margin-top:14px!important}.kcr-social-links a{width:38px!important;height:38px!important;border-radius:50%!important;display:grid!important;place-items:center!important;border:1px solid rgba(255,255,255,.3)!important;color:#fff!important;transition:background .18s ease,border-color .18s ease,transform .18s ease}.kcr-social-links a:hover,.kcr-social-links a:focus-visible{background:#f3b61f!important;border-color:#f3b61f!important;color:#001b33!important;transform:translateY(-2px)}.kcr-social-links svg{width:19px!important;height:19px!important;display:block!important;fill:currentColor!important}
+    @media(max-width:1320px) and (min-width:1181px){.brand{width:280px!important;min-width:280px!important;flex-basis:280px!important}.brand>img{width:280px!important;height:82px!important;max-width:280px!important;max-height:82px!important}.nav{gap:12px!important}.navlinks a{padding:9px 7px!important;font-size:14px!important}}
     @media(max-width:1180px){.nav{min-height:94px!important;padding-block:6px!important}.brand{width:285px!important;min-width:0!important;height:80px!important;flex:0 1 285px!important}.brand>img{width:285px!important;height:80px!important;max-width:285px!important;max-height:80px!important}.navlinks{display:none!important;top:94px!important}.navlinks.open{display:flex!important}}
     @media(max-width:680px){.nav{min-height:84px!important;padding-block:5px!important}.brand{width:min(250px,72vw)!important;height:72px!important;flex:0 1 auto!important}.brand>img{width:100%!important;height:72px!important;max-width:100%!important;max-height:72px!important}.navlinks{top:84px!important}}
   `;
@@ -26,20 +27,52 @@
   document.head.appendChild(campaignStyle);
 })();
 
+const ensureSiteChrome=()=>{
+  document.querySelectorAll('.navlinks').forEach(nav=>{
+    if(!nav.querySelector('a[href="/volunteer/"]')){
+      const contact=nav.querySelector('a[href="/contact/"]')?.closest('li');
+      const li=document.createElement('li');
+      li.setAttribute('data-kcr-volunteer-nav','true');
+      li.innerHTML='<a href="/volunteer/">Volunteer</a>';
+      if(contact)nav.insertBefore(li,contact);else nav.appendChild(li);
+    }
+  });
+  document.querySelectorAll('.footer').forEach(footer=>{
+    const columns=[...footer.querySelectorAll('.footer-top > div')];
+    const quick=columns.find(col=>/quick links|explore/i.test(col.querySelector('h4')?.textContent||''));
+    if(quick){
+      const heading=quick.querySelector('h4');
+      if(heading&&/explore/i.test(heading.textContent||''))heading.textContent='Quick Links';
+      const p=quick.querySelector('p')||quick.appendChild(document.createElement('p'));
+      if(!p.querySelector('a[href="/travel/"]'))p.insertAdjacentHTML('beforeend','<br><a href="/travel/">Travel</a>');
+      if(!p.querySelector('a[href="/volunteer/"]'))p.insertAdjacentHTML('beforeend','<br><a href="/volunteer/">Volunteer</a>');
+    }
+    if(!footer.querySelector('.kcr-social-links')){
+      const contact=columns.find(col=>/contact/i.test(col.querySelector('h4')?.textContent||''))||columns[0];
+      if(contact){
+        const social=document.createElement('div');
+        social.className='kcr-social-links';
+        social.setAttribute('aria-label','Kingston City Marathon social media');
+        social.innerHTML='<a href="https://www.facebook.com/KingstonCityRun/" target="_blank" rel="noopener noreferrer" aria-label="Kingston City Run on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-9h3l.5-3.5h-3.5V7.25c0-1 .28-1.68 1.75-1.68H17V2.45c-.3-.04-1.35-.13-2.57-.13-2.55 0-4.3 1.56-4.3 4.42V9.5H7.25V13h2.88v9h3.37Z"/></svg></a><a href="https://www.instagram.com/kingstoncitymarathon" target="_blank" rel="noopener noreferrer" aria-label="Kingston City Marathon on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 2h9.6A5.2 5.2 0 0 1 22 7.2v9.6a5.2 5.2 0 0 1-5.2 5.2H7.2A5.2 5.2 0 0 1 2 16.8V7.2A5.2 5.2 0 0 1 7.2 2Zm-.18 2A3.02 3.02 0 0 0 4 7.02v9.96A3.02 3.02 0 0 0 7.02 20h9.96A3.02 3.02 0 0 0 20 16.98V7.02A3.02 3.02 0 0 0 16.98 4H7.02ZM17.5 5.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg></a>';
+        contact.appendChild(social);
+      }
+    }
+  });
+};
+
+/* Apply the shared navigation/footer additions immediately when possible and again after load. */
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ensureSiteChrome,{once:true});else ensureSiteChrome();
+window.addEventListener('load',ensureSiteChrome,{once:true});
+setTimeout(ensureSiteChrome,250);
+
 document.addEventListener('DOMContentLoaded',()=>{
+  ensureSiteChrome();
   document.querySelectorAll('.brand img').forEach(img=>{img.src='/assets/images/kcr-logo-clean.png?v=20261008d';img.alt='Kingston City Marathon';img.removeAttribute('width');img.removeAttribute('height')});
 
   const themeImage=document.querySelector('.theme-photo-panel img');
   if(themeImage){themeImage.src='/assets/images/kcr-theme-2027-final-v2.png';themeImage.alt='Kingston City Marathon 2027 Pirates versus Heroes campaign featuring a diverse group of runners in Kingston'}
 
-  /* Travel page: give the three official travel advisors the same branded-card treatment as the Kingston hotels. */
-  const advisorGrid=document.querySelector('#packages .grid.grid-3');
-  if(advisorGrid){
-    const advisorStyle=document.createElement('style');
-    advisorStyle.textContent=`.advisor-card{display:flex;flex-direction:column;align-items:center;text-align:center;min-height:300px}.advisor-logo{height:105px;width:100%;display:flex;align-items:center;justify-content:center;margin-bottom:14px;padding:6px 12px}.advisor-wordmark{height:92px;width:100%;display:flex;align-items:center;justify-content:center;font-family:Montserrat,sans-serif;line-height:1}.advisor-card h3{margin-top:0}.advisor-card p{flex:1}.advisor-card .advisor-link{margin-top:12px}.go-wordmark{font-size:28px;font-weight:900;font-style:italic;letter-spacing:-.04em;color:#0878bd}.go-wordmark strong{color:#ef3d33}.go-wordmark small{display:block;font-size:11px;font-style:normal;letter-spacing:.12em;color:#16324a;margin-top:7px}.trafalgar-wordmark{font-family:Georgia,serif;font-size:38px;font-weight:700;font-style:italic;color:#c72026;text-shadow:0 1px 0 #7d1015}.trafalgar-wordmark small{display:block;font-family:Montserrat,sans-serif;font-size:10px;font-style:normal;letter-spacing:.2em;color:#333;margin-top:8px}.lfp-wordmark{flex-direction:column;color:#123b72}.lfp-wordmark .lfp{font-size:42px;font-weight:900;letter-spacing:-.05em}.lfp-wordmark .lfp-name{font-size:12px;font-weight:800;letter-spacing:.08em;margin-top:6px}.lfp-wordmark .lfp-tag{font-size:9px;font-weight:600;letter-spacing:.08em;color:#d67b20;margin-top:5px}`;
-    document.head.appendChild(advisorStyle);
-    advisorGrid.innerHTML=`<div class="card advisor-card"><div class="advisor-logo"><div class="advisor-wordmark go-wordmark" role="img" aria-label="GO! Jamaica Travel"><div><strong>GO!</strong> JAMAICA TRAVEL<small>TRAVEL COMPANY LIMITED</small></div></div></div><h3>GO! Jamaica Travel</h3><p>Kingston-based travel agency offering vacation packages, hotels, flights, tours, transfers and destination management services.</p><a class="btn btn-primary advisor-link" href="https://gojamaicatravel.travel/" target="_blank" rel="noopener noreferrer">Visit Travel Advisor Website ↗</a></div><div class="card advisor-card"><div class="advisor-logo"><div class="advisor-wordmark trafalgar-wordmark" role="img" aria-label="Trafalgar Travel"><div>Trafalgar<small>TRAVEL LIMITED</small></div></div></div><h3>Trafalgar Travel</h3><p>Full-service Jamaican travel management company assisting with flights, hotels, car rentals, cruises, group travel and destination management.</p><a class="btn btn-primary advisor-link" href="https://www.trafalgartmc.com/" target="_blank" rel="noopener noreferrer">Visit Travel Advisor Website ↗</a></div><div class="card advisor-card"><div class="advisor-logo"><div class="advisor-wordmark lfp-wordmark" role="img" aria-label="Leisure for Pleasure Holidays and Tours"><div class="lfp">LFP</div><div class="lfp-name">LEISURE FOR PLEASURE</div><div class="lfp-tag">HOLIDAYS &amp; TOURS</div></div></div><h3>Leisure for Pleasure</h3><p>Jamaican travel and destination management company offering hotel stays, vacation packages, island tours, transfers and customized experiences.</p><a class="btn btn-primary advisor-link" href="https://leisureja.com/" target="_blank" rel="noopener noreferrer">Visit Travel Advisor Website ↗</a></div>`;
-  }
+  /* Travel advisor content is authored in travel/index.html so campaign offers and dates are not overwritten at runtime. */
 
   /* Travel page: turn the spectator copy into a more inviting race-day feature using an existing 2026 gallery image. */
   const spectatorSection=document.querySelector('#spectators');
